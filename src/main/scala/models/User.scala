@@ -49,7 +49,7 @@ object Firebase {
    //val serviceAccount:InputStream = getClass.getClassLoader.getResourceAsStream("curso.json")
  
   val options = new FirebaseOptions.Builder()
- .setDatabaseUrl("https://curso-410b5.firebaseio.com/")
+ .setDatabaseUrl("")
  .setServiceAccount(serviceAccount)
  .build()
 
