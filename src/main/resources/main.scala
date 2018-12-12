@@ -64,7 +64,7 @@ object Firebase {
  
 private val credentials:InputStream = getClass.getResourceAsStream("./curso-410b5-firebase-adminsdk-jtedy-210a3b3862.json")
  private val options = new FirebaseOptions.Builder()
- .setDatabaseUrl("https://curso-410b5.firebaseio.com/")
+ .setDatabaseUrl("")
  .setServiceAccount(credentials)
  .build()
  FirebaseApp.initializeApp(options)
