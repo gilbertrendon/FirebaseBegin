@@ -40,8 +40,6 @@ class CarController(carRepository: CarRepository)(implicit ec: ExecutionContext)
           complete(carRepository.save(createCar))
         }
       }
-    }
+   }
   }
-
-
 }

@@ -38,6 +38,11 @@ import com.google.firebase.database.ValueEventListener;
 import scala.collection.JavaConverters._
 import scala.collection.breakOut
 
+case class FindByIdRequest(id: String) {
+  require(ObjectId.isValid(id), "the informed id is not a representation of a valid hex string")
+}
+
+
 case class FirebaseException(s:String) extends Exception(s)
 
 case class UserNotFoundException(s:String) extends Exception(s)
@@ -46,26 +51,28 @@ object Firebase {
   val resourcesPath = getClass.getClassLoader.getResource("curso.json")
     println(resourcesPath.getPath.toString())    
  
-   //val serviceAccount:InputStream = getClass.getClassLoader.getResourceAsStream("curso.json")
+   val serviceAccount:InputStream = getClass.getClassLoader.getResourceAsStream("curso.json")
  
   val options = new FirebaseOptions.Builder()
- .setDatabaseUrl("https://curso-410b5.firebaseio.com/")
+ .setDatabaseUrl("https://renty-vue.firebaseio.com")
  .setServiceAccount(serviceAccount)
  .build()
 
  FirebaseApp.initializeApp(options)
   val database = FirebaseDatabase.getInstance()
  def ref(path: String): DatabaseReference = database.getReference(path)
+     println("listo el llopo")    
+
 
 }
 
-case class User(firstname: String,lastname: String,email: String)
+case class User(name: String,password: String,token: String)
                 {
                   def toBean ={
                     val user = new UserBean()
-                    user.firstname = firstname 
-                    user.lastname = lastname 
-                    user.email = email 
+                    user.name = name 
+                    user.password = password 
+                    user.token = token 
                     user
                   }
                   
@@ -73,8 +80,7 @@ case class User(firstname: String,lastname: String,email: String)
                 }
 object User{
 def create(user: User): Future[User] = {
-                  printf("ALGUNA BASURITA")
-                  val ref = Firebase.ref(s"usuarios/${user.firstname}")
+                  val ref = Firebase.ref(s"users/${user.name}")
                  
                   val userRecord = user.toBean
                   val p = new Promise[User]
@@ -90,10 +96,9 @@ def create(user: User): Future[User] = {
     p
   }  
 
-def get(id: String): Future[User] = {
-    val ref = Firebase.ref(s"usuarios/$id")
+def findById(id: String): Future[User] = {
+    val ref = Firebase.ref(s"renty-vue/$id")
     val p = new Promise[User]
-    printf("Antes del ref\n")
     ref.addListenerForSingleValueEvent(new ValueEventListener() {
        def onDataChange(snapshot: DataSnapshot) =  {
         val userRecord: UserBean = snapshot.getValue(classOf[UserBean])
@@ -108,17 +113,26 @@ def get(id: String): Future[User] = {
       }
     })
     p
-  }  
+  }
+
+  def save(user: User): Future[User] = {
+                 //lógica
+    val userr = new Promise[User]
+    userr
+  }   
+
 }
 
 class UserBean() {
-  @BeanProperty var firstname:String = null
-  @BeanProperty var lastname:String = null
-  @BeanProperty var email:String = null
+  @BeanProperty var name:String = null
+  @BeanProperty var password:String = null
+  @BeanProperty var token:String = null
   
   def toCase:User =  {
-    User(firstname,lastname,email)
+    User(name,password,token)
   }
+
+  
 }
 
 

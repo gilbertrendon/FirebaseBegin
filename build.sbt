@@ -10,6 +10,7 @@ val circeVersion = "0.10.0"
 libraryDependencies ++= Seq(
   "com.twitter"%%"finagle-http"%"6.41.0",
   //"com.google.firebase" % "firebase-admin" % "6.0.0",
+  //"com.typesafe.akka" %%  "akka-http-core"    % "2.4.5",
   "com.google.firebase"%"firebase-server-sdk"%"3.0.0",
    "com.github.firebase4s" %% "firebase4s" % "0.0.4",
   "com.typesafe.akka" %% "akka-actor" % "2.5.18",
